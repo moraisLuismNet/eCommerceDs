@@ -34,7 +34,7 @@ public class CartRepository : ICartRepository
         return await _context.Carts
             .Include(c => c.CartDetails)
                 .ThenInclude(cd => cd.Record)
-            .FirstOrDefaultAsync(c => c.UserEmail == userEmail && c.Enabled);
+            .FirstOrDefaultAsync(c => c.UserEmail == userEmail);
     }
 
 

@@ -1,7 +1,6 @@
 ## eCommerceDs
 ASP.NET Core Web API eCommerceDs
 
-![eCommerceDs](img/eCommerceDs.webp)
 ![eCommerceDs](img/1.png)
 ![eCommerceDs](img/2.png)
 ![eCommerceDs](img/3.png)
