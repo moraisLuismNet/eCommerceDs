@@ -7,16 +7,18 @@ ASP.NET Core Web API eCommerceDs
 
 
 ## Program
-``` 
+```cs
 builder.Services.AddDbContext<AlmacenContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"))
 );
 ``` 
 
 ## appsetting.Development.json
-``` 
+```cs
 {
   "ConnectionStrings": {
         "Connection": "Server=*;Database=eCommerceDs;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True"
 }
 ``` 
+
+[DeepWiki moraisLuismNet/eCommerceDs](https://deepwiki.com/moraisLuismNet/eCommerceDs)
