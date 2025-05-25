@@ -1,5 +1,108 @@
 ## eCommerceDs
-ASP.NET Core Web API eCommerceDs
+
+**eCommerceDs** an ASP.NET Core Web API designed for e-commerce data services with cart management functionality. 
+
+![eCommerceDs](img/UML.png)
+
+eComerceDs/  
+├── AutoMappers/  
+│   └── MappingProfile.cs  
+├── Classes/  
+│   └── HashResult.cs  
+├── Controllers/  
+│   ├── AuthController.cs  
+│   ├── CartDetailsController.cs  
+│   ├── CartsController.cs  
+│   ├── GroupsController.cs  
+│   ├── MusicGenresController.cs  
+│   ├── OrdersController.cs  
+│   ├── RecordsController.cs  
+│   └── UsersController.cs  
+├── DTOs/  
+│   ├── CartDetailDTO.cs  
+│   ├── CartDetailInfoDTO.cs  
+│   ├── CartDTO.cs  
+│   ├── CartStatusDTO.cs  
+│   ├── ChangePasswordDTO.cs  
+│   ├── GroupDTO.cs  
+│   ├── GroupInsertDTO.cs  
+│   ├── GroupRecordsDTO.cs  
+│   ├── GroupUpdateDTO.cs  
+│   ├── LoginResponseDTO.cs  
+│   ├── MusicGenreDTO.cs  
+│   ├── MusicGenreInsertDTO.cs  
+│   ├── MusicGenreTotalGroupsDTO.cs  
+│   ├── MusicGenreUpdateDTO.cs  
+│   ├── OrderDetailDTO.cs  
+│   ├── OrderDTO.cs  
+│   ├── RecordDTO.cs  
+│   ├── RecordInsertDTO.cs  
+│   ├── RecordItemDTO.cs  
+│   ├── RecordUpdateDTO.cs  
+│   ├── UserDTO.cs  
+│   ├── UserInsertDTO.cs  
+│   └── UserLoginDTO.cs  
+├── Models/  
+│   ├── Cart.cs  
+│   ├── CartDetail.cs  
+│   ├── eCommerceDsContext.cs  
+│   ├── Group.cs  
+│   ├── MusicGenre.cs  
+│   ├── Order.cs  
+│   ├── OrderDetail.cs  
+│   ├── Record.cs  
+│   └── User.cs  
+├── Repository/  
+│   ├── CartDetailRepository.cs  
+│   ├── CartRepository.cs  
+│   ├── GroupRepository.cs  
+│   ├── ICartDetailRepository.cs  
+│   ├── ICartRepository.cs  
+│   ├── IeCommerceDsRepository.cs  
+│   ├── IGroupRepository.cs  
+│   ├── IMusicGenreRepository.cs  
+│   ├── IOrderRepository.cs  
+│   ├── IRecordRepository.cs  
+│   ├── IUserRepository.cs  
+│   ├── MusicGenreRepository.cs  
+│   ├── OrderRepository.cs  
+│   ├── RecordRepository.cs  
+│   └── UserRepository.cs  
+├── Services/  
+│   ├── CartDetailService.cs  
+│   ├── CartService.cs  
+│   ├── FileManagerService.cs  
+│   ├── GroupService.cs  
+│   ├── HashService.cs  
+│   ├── ICartDetailService.cs  
+│   ├── ICartService.cs  
+│   ├── IeCommerceDsService.cs  
+│   ├── IFileManagerService.cs  
+│   ├── IGroupService.cs  
+│   ├── IMusicGenreService.cs  
+│   ├── IOrderService.cs  
+│   ├── IRecordService.cs  
+│   ├── ITokenService.cs  
+│   ├── IUserService.cs  
+│   ├── MusicGenreService.cs  
+│   ├── OrderService.cs  
+│   ├── RecordService.cs  
+│   ├── TokenService.cs  
+│   └── UserService.cs  
+├── Validators/  
+│   ├── FileTypeValidator.cs  
+│   ├── GroupFileType.cs  
+│   ├── GroupInsertValidator.cs  
+│   ├── GroupUpdateValidator.cs  
+│   ├── MusicGenreInsertValidator.cs  
+│   ├── MusicGenreUpdateValidator.cs  
+│   ├── RecordInsertValidator.cs  
+│   ├── RecordUpdateValidator.cs  
+│   └── WeightFileValidator.cs  
+├── appsettings.Development.json   
+├── appsettings.json  
+├── Dockerfile  
+└── Program.cs  
 
 ![eCommerceDs](img/1.png)
 ![eCommerceDs](img/2.png)
