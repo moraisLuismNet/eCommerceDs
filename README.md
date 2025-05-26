@@ -1,6 +1,6 @@
 ## eCommerceDs
 
-**eCommerceDs** an ASP.NET Core Web API designed for e-commerce data services with cart management functionality. 
+**eCommerceDs** is an ASP.NET Core Web API project. It is the backend service layer for an e-commerce application, focused on data management. The Repository implements the data access logic. The Services contain the application's business logic. Key features implemented in the project include: Authentication and Authorization, User Management, Catalog Management, Shopping Cart Management, and Order Management.
 
 ![eCommerceDs](img/UML.png)
 
@@ -123,5 +123,7 @@ builder.Services.AddDbContext<AlmacenContext>(options =>
         "Connection": "Server=*;Database=eCommerceDs;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True"
 }
 ``` 
+
+![eCommerceDs](img/DB.png)
 
 [DeepWiki moraisLuismNet/eCommerceDs](https://deepwiki.com/moraisLuismNet/eCommerceDs)
