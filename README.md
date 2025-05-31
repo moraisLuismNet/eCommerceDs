@@ -99,9 +99,7 @@ eComerceDs/
 │   ├── RecordInsertValidator.cs  
 │   ├── RecordUpdateValidator.cs  
 │   └── WeightFileValidator.cs  
-├── appsettings.Development.json   
 ├── appsettings.json  
-├── Dockerfile  
 └── Program.cs  
 
 ![eCommerceDs](img/1.png)
