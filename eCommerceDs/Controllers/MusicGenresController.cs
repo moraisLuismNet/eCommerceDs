@@ -56,17 +56,17 @@ namespace eCommerceDs.Controllers
         }
 
 
-				[HttpGet("sortedByName/{ascen}")]
-				[AllowAnonymous]
-				public async Task<ActionResult<IEnumerable<MusicGenreDTO>>> GetSortedByName(bool ascen)
-				{
-					var musicGenres = await _musicGenreService.GetSortedByNameMusicGenreService(ascen);
-					if (musicGenres == null || !musicGenres.Any())
-					{
-						return NotFound("No musical genres found");
-					}
-					return Ok(musicGenres);
-				}
+		[HttpGet("sortedByName/{ascen}")]
+		[AllowAnonymous]
+		public async Task<ActionResult<IEnumerable<MusicGenreDTO>>> GetSortedByName(bool ascen)
+		{
+			var musicGenres = await _musicGenreService.GetSortedByNameMusicGenreService(ascen);
+			if (musicGenres == null || !musicGenres.Any())
+			{
+				return NotFound("No musical genres found");
+			}
+			return Ok(musicGenres);
+		}
 
 
         [HttpGet("GetMusicGenresWithTotalGroups")]
