@@ -44,6 +44,11 @@ namespace eCommerceDs.Services
 
         public async Task<OrderDTO> CreateOrderFromCartOrderService(string userEmail, string paymentMethod)
         {
+            // Validate and set default value if necessary
+            string finalPaymentMethod = string.IsNullOrWhiteSpace(paymentMethod)
+                ? "Credit Card"
+                : paymentMethod;
+
             await ValidateUserAndCartOrderService(userEmail);
 
             var cart = await _cartRepository.GetActiveCartByUserEmailCartRepository(userEmail);
@@ -68,7 +73,7 @@ namespace eCommerceDs.Services
             var order = new Order
             {
                 OrderDate = DateTime.UtcNow,
-                PaymentMethod = paymentMethod,
+                PaymentMethod = finalPaymentMethod,
                 Total = cart.TotalPrice,
                 UserEmail = userEmail,
                 CartId = cart.IdCart,
@@ -80,7 +85,7 @@ namespace eCommerceDs.Services
                 }).ToList()
             };
 
-            cart.TotalPrice = 0; 
+            cart.TotalPrice = 0;
             await _cartRepository.UpdateCartTotalPriceCartRepository(cart);
 
             await _cartDetailRepository.RemoveAllCartDetailsCartDetailRepository(cart.IdCart);
@@ -89,6 +94,7 @@ namespace eCommerceDs.Services
 
             return _mapper.Map<OrderDTO>(createdOrder);
         }
+
 
 
         public async Task<bool> ValidateUserAndCartOrderService(string userEmail)

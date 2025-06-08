@@ -31,16 +31,19 @@ namespace eCommerceDs.Controllers
             return Ok(orders);
         }
 
-        
+
         [HttpPost("from-cart/{userEmail}")]
         public async Task<ActionResult<OrderDTO>> CreateOrderFromCart(
-        string userEmail,
-        [FromBody] string paymentMethod)
+        string userEmail, string paymentMethod = "Credit Card")
         {
             try
             {
                 var decodedEmail = Uri.UnescapeDataString(userEmail);
-                var order = await _orderService.CreateOrderFromCartOrderService(decodedEmail, paymentMethod);
+
+                var order = await _orderService.CreateOrderFromCartOrderService(
+                    decodedEmail, paymentMethod
+                );
+
                 return CreatedAtAction(
                     nameof(GetOrdersByUserEmail),
                     new { userEmail = decodedEmail },

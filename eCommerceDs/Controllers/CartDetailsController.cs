@@ -149,6 +149,11 @@ namespace eCommerceDs.Controllers
                 return NotFound(new { message = "Cart not found" });
             }
 
+            if (!cart.Enabled)
+            {
+                return BadRequest(new { message = "Cannot add items to a disabled cart" });
+            }
+
             // Update stock before adding to cart
             record.Stock -= amount;
             await _recordService.UpdateRecordRecordService(record);
@@ -182,6 +187,7 @@ namespace eCommerceDs.Controllers
                 updatedStock = record.Stock
             });
         }
+
 
         [Authorize]
         [HttpPost("removeFromCartDetailAndCart/{email}")]
