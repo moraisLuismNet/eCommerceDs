@@ -1,4 +1,5 @@
-﻿using eCommerceDs.DTOs;
+﻿using AutoMapper;
+using eCommerceDs.DTOs;
 using eCommerceDs.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -14,14 +15,16 @@ namespace eCommerceDs.Controllers
         private readonly IValidator<GroupInsertDTO> _groupInsertValidator;
         private readonly IValidator<GroupUpdateDTO> _groupUpdateValidator;
         private readonly IGroupService _groupService;
+        private IMapper _mapper;
 
         public GroupsController(IValidator<GroupInsertDTO> groupInsertValidator,
             IValidator<GroupUpdateDTO> groupUpdateValidator,
-            IGroupService groupService)
+            IGroupService groupService, IMapper mapper)
         {
             _groupInsertValidator = groupInsertValidator;
             _groupUpdateValidator = groupUpdateValidator;
             _groupService = groupService;
+            _mapper = mapper;
         }
 
 
@@ -34,10 +37,12 @@ namespace eCommerceDs.Controllers
 
         [HttpGet("{IdGroup:int}")]
         [AllowAnonymous]
-        public async Task<ActionResult<GroupDTO>> GetById(int IdGroup)
+        public async Task<ActionResult<GroupItemDTO>> GetById(int IdGroup)
         {
             var groupDTO = await _groupService.GetByIdService(IdGroup);
-            return groupDTO == null ? NotFound($"Group with ID {IdGroup} not found") : Ok(groupDTO);
+            var groupItemDTO = _mapper.Map<GroupItemDTO>(groupDTO);
+            
+            return groupItemDTO == null ? NotFound($"Group with ID {IdGroup} not found") : Ok(groupItemDTO);
         }
 
 
@@ -46,6 +51,7 @@ namespace eCommerceDs.Controllers
         public async Task<ActionResult<IEnumerable<GroupRecordsDTO>>> GetGroupsRecords()
         {
             var groupRecords = await _groupService.GetGroupsRecordsGroupService();
+            
             return Ok(groupRecords);
         }
 
@@ -67,7 +73,7 @@ namespace eCommerceDs.Controllers
 
         [HttpGet("SearchByName/{text}")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<GroupDTO>>> SearchByName(string text)
+        public async Task<ActionResult<IEnumerable<GroupItemDTO>>> SearchByName(string text)
         {
             var groups = await _groupService.SearchByNameGroupService(text);
 
@@ -76,21 +82,25 @@ namespace eCommerceDs.Controllers
                 return NotFound($"No groups found matching the text '{text}'");
             }
 
-            return Ok(groups);
+            var groupsItem = _mapper.Map<IEnumerable<GroupItemDTO>>(groups);
+            
+            return Ok(groupsItem);
         }
 
 
         [HttpGet("sortedByName/{ascen}")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<GroupDTO>>> GetSortedByName(bool ascen)
+        public async Task<ActionResult<IEnumerable<GroupItemDTO>>> GetSortedByName(bool ascen)
         {
             var groups = await _groupService.GetSortedByNameGroupService(ascen);
-            return Ok(groups);
+            var groupsItem = _mapper.Map<IEnumerable<GroupItemDTO>>(groups);
+            
+            return Ok(groupsItem);
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<GroupDTO>> Add(GroupInsertDTO groupInsertDTO)
+        public async Task<ActionResult<GroupItemDTO>> Add(GroupInsertDTO groupInsertDTO)
         {
             var validationResult = await _groupInsertValidator.ValidateAsync(groupInsertDTO);
             if (!validationResult.IsValid)
@@ -99,13 +109,14 @@ namespace eCommerceDs.Controllers
             }
 
             var groupDTO = await _groupService.AddService(groupInsertDTO);
-
-            return CreatedAtAction(nameof(GetById), new { groupDTO.IdGroup }, groupDTO);
+            var groupItemDTO = _mapper.Map<GroupItemDTO>(groupDTO);
+            
+            return CreatedAtAction(nameof(GetById), new { groupItemDTO.IdGroup }, groupItemDTO);
         }
 
 
         [HttpPut("{IdGroup:int}")]
-        public async Task<ActionResult<GroupDTO>> Update(int IdGroup, GroupUpdateDTO groupUpdateDTO)
+        public async Task<ActionResult<GroupItemDTO>> Update(int IdGroup, GroupUpdateDTO groupUpdateDTO)
         {
             var validationResult = await _groupUpdateValidator.ValidateAsync(groupUpdateDTO);
             if (!validationResult.IsValid)
@@ -114,13 +125,14 @@ namespace eCommerceDs.Controllers
             }
 
             var groupDTO = await _groupService.UpdateService(IdGroup, groupUpdateDTO);
-
-            return groupDTO == null ? NotFound($"Group with ID {IdGroup} not found") : Ok(groupDTO);
+            var groupItemDTO = _mapper.Map<GroupItemDTO>(groupDTO);
+            
+            return groupItemDTO == null ? NotFound($"Group with ID {IdGroup} not found") : Ok(groupItemDTO);
         }
 
 
         [HttpDelete("{IdGroup:int}")]
-        public async Task<ActionResult<GroupDTO>> Delete(int IdGroup)
+        public async Task<ActionResult<GroupItemDTO>> Delete(int IdGroup)
         {
             bool hasGroups = await _groupService.GroupHasRecordsGroupService(IdGroup);
             if (hasGroups)
@@ -128,7 +140,9 @@ namespace eCommerceDs.Controllers
                 return BadRequest($"The Group with ID {IdGroup} cannot be deleted because it has associated Records");
             }
             var groupDTO = await _groupService.DeleteService(IdGroup);
-            return groupDTO == null ? NotFound($"Group with ID {IdGroup} not found") : Ok(groupDTO);
+            var groupItemDTO = _mapper.Map<GroupItemDTO>(groupDTO);
+            
+            return groupItemDTO == null ? NotFound($"Group with ID {IdGroup} not found") : Ok(groupItemDTO);
         }
     }
 }

@@ -25,10 +25,11 @@ namespace eCommerceDs.Services
         }
 
 
-        public async Task<IEnumerable<UserDTO>> GetUserService()
+        public async Task<IEnumerable<UserInsertDTO>> GetUserService()
         {
             var users = await _userRepository.GetUserRepository();
-            return users.Select(user => _mapper.Map<UserDTO>(user));
+
+            return users.Select(user => _mapper.Map<UserInsertDTO>(user));
         }
 
 
@@ -41,6 +42,7 @@ namespace eCommerceDs.Services
         public bool VerifyPasswordUserService(string password, User user)
         {
             var hashResult = _hashService.Hash(password, user.Salt);
+
             return user.Password == hashResult.Hash;
         }
 
@@ -52,6 +54,7 @@ namespace eCommerceDs.Services
                 Errors.Add("Email and password required");
                 return false;
             }
+
             return true;
         }
 
@@ -69,6 +72,7 @@ namespace eCommerceDs.Services
 
             await _userRepository.AddUserRepository(user);
             await _userRepository.SaveUserRepository();
+
             return _mapper.Map<UserDTO>(user);
         }
 
@@ -92,9 +96,9 @@ namespace eCommerceDs.Services
 
             _userRepository.UpdateUserRepository(user);
             await _userRepository.SaveUserRepository();
+
             return true;
         }
-
 
         public async Task<UserDTO> DeleteUserService(string email)
         {

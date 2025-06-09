@@ -6,7 +6,7 @@ namespace eCommerceDs.Services
     public interface IUserService 
     {
         public List<string> Errors { get; }
-        Task<IEnumerable<UserDTO>> GetUserService();
+        Task<IEnumerable<UserInsertDTO>> GetUserService();
         Task<User?> GetByEmailUserService(string email);
         bool ValidateUserService(UserInsertDTO dto);
         bool VerifyPasswordUserService(string password, User user);

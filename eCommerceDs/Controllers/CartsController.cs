@@ -23,6 +23,7 @@ namespace eCommerceDs.Controllers
         public async Task<ActionResult<IEnumerable<CartDTO>>> GetAllCarts()
         {
             var carts = await _cartService.GetAllCartsCartService();
+
             return Ok(carts);
         }
 
@@ -33,6 +34,7 @@ namespace eCommerceDs.Controllers
             try
             {
                 var cartSumary = await _cartService.GetCartByEmailCartService(email);
+
                 return Ok(cartSumary);
             }
             catch (InvalidOperationException ex)
@@ -112,6 +114,7 @@ namespace eCommerceDs.Controllers
             try
             {
                 var enabledCart = await _cartService.EnableCartCartService(email);
+
                 return Ok(new
                 {
                     message = $"Cart with UserEmail {email} has been enabled",

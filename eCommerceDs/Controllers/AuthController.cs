@@ -62,7 +62,7 @@ namespace eCommerceDs.Controllers
 
             userDTO.CartId = cart.IdCart;
 
-            return Ok(userDTO);
+            return Ok(userInsertDTO);
         }
 
 
@@ -83,6 +83,7 @@ namespace eCommerceDs.Controllers
             }
 
             var tokenResponse = _tokenService.GenerateTokenService(user);
+
             return Ok(tokenResponse);
         }
 

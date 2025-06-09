@@ -26,11 +26,13 @@ eComerceDs/
 │   ├── ChangePasswordDTO.cs  
 │   ├── GroupDTO.cs  
 │   ├── GroupInsertDTO.cs  
+│   ├── GroupItemDTO.cs    
 │   ├── GroupRecordsDTO.cs  
 │   ├── GroupUpdateDTO.cs  
 │   ├── LoginResponseDTO.cs  
 │   ├── MusicGenreDTO.cs  
 │   ├── MusicGenreInsertDTO.cs  
+│   ├── MusicGenreItemDTO.cs  
 │   ├── MusicGenreTotalGroupsDTO.cs  
 │   ├── MusicGenreUpdateDTO.cs  
 │   ├── OrderDetailDTO.cs  
@@ -38,6 +40,7 @@ eComerceDs/
 │   ├── RecordDTO.cs  
 │   ├── RecordInsertDTO.cs  
 │   ├── RecordItemDTO.cs  
+│   ├── RecordItemExtDTO.cs  
 │   ├── RecordUpdateDTO.cs  
 │   ├── UserDTO.cs  
 │   ├── UserInsertDTO.cs  
@@ -118,7 +121,7 @@ builder.Services.AddDbContext<AlmacenContext>(options =>
 ```cs
 {
   "ConnectionStrings": {
-        "Connection": "Server=*;Database=eCommerceDs;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True"
+        "Connection": "Server=*;Database=eCommerceDsDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True"
 }
 ``` 
 

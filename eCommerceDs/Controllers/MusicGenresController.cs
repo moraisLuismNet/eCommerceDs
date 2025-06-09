@@ -1,8 +1,9 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 using eCommerceDs.DTOs;
 using eCommerceDs.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerceDs.Controllers
 {
@@ -14,14 +15,16 @@ namespace eCommerceDs.Controllers
         private readonly IValidator<MusicGenreInsertDTO> _musicGenreInsertValidator;
         private readonly IValidator<MusicGenreUpdateDTO> _musicGenreUpdateValidator;
         private readonly IMusicGenreService _musicGenreService;
+        private IMapper _mapper;
 
         public MusicGenresController(IValidator<MusicGenreInsertDTO> musicGenreInsertValidator,
             IValidator<MusicGenreUpdateDTO> musicGenreUpdateValidator,
-            IMusicGenreService musicGenreService)
+            IMusicGenreService musicGenreService, IMapper mapper)
         {
             _musicGenreInsertValidator = musicGenreInsertValidator;
             _musicGenreUpdateValidator = musicGenreUpdateValidator;
             _musicGenreService = musicGenreService;
+            _mapper = mapper;
         }
 
 
@@ -34,16 +37,18 @@ namespace eCommerceDs.Controllers
 
         [HttpGet("{IdMusicGenre:int}")]
         [AllowAnonymous]
-        public async Task<ActionResult<MusicGenreDTO>> GetById(int IdMusicGenre)
+        public async Task<ActionResult<MusicGenreItemDTO>> GetById(int IdMusicGenre)
         {
             var musicGenreDTO = await _musicGenreService.GetByIdService(IdMusicGenre);
-            return musicGenreDTO == null ? NotFound($"MusicGenre with ID {IdMusicGenre} not found") : Ok(musicGenreDTO);
+            var musicGenreItemDTO = _mapper.Map<MusicGenreItemDTO>(musicGenreDTO);
+
+            return musicGenreItemDTO == null ? NotFound($"MusicGenre with ID {IdMusicGenre} not found") : Ok(musicGenreItemDTO);
         }
 
 
         [HttpGet("SearchByName/{text}")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<MusicGenreDTO>>> SearchByName(string text)
+        public async Task<ActionResult<IEnumerable<MusicGenreItemDTO>>> SearchByName(string text)
         {
             var musicGenres = await _musicGenreService.SearchByNameMusicGenreService(text);
 
@@ -52,21 +57,27 @@ namespace eCommerceDs.Controllers
                 return NotFound($"No musical genres found matching the text '{text}'");
             }
 
-            return Ok(musicGenres);
+            var musicGenresItemDTO = _mapper.Map<IEnumerable<MusicGenreItemDTO>>(musicGenres);
+
+            return Ok(musicGenresItemDTO);
         }
 
 
-		[HttpGet("sortedByName/{ascen}")]
-		[AllowAnonymous]
-		public async Task<ActionResult<IEnumerable<MusicGenreDTO>>> GetSortedByName(bool ascen)
-		{
-			var musicGenres = await _musicGenreService.GetSortedByNameMusicGenreService(ascen);
-			if (musicGenres == null || !musicGenres.Any())
-			{
-				return NotFound("No musical genres found");
-			}
-			return Ok(musicGenres);
-		}
+        [HttpGet("sortedByName/{ascen}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<MusicGenreItemDTO>>> GetSortedByName([FromRoute] bool ascen)
+        {
+            var musicGenres = await _musicGenreService.GetSortedByNameMusicGenreService(ascen);
+
+            if (musicGenres == null || !musicGenres.Any())
+            {
+                return NotFound("No musical genres found");
+            }
+
+            var musicGenresItemDTO = _mapper.Map<IEnumerable<MusicGenreItemDTO>>(musicGenres);
+
+            return Ok(musicGenresItemDTO);
+        }
 
 
         [HttpGet("GetMusicGenresWithTotalGroups")]
@@ -74,12 +85,13 @@ namespace eCommerceDs.Controllers
         public async Task<ActionResult<IEnumerable<MusicGenreTotalGroupsDTO>>> GetMusicGenresWithTotalGroups()
         {
             var genres = await _musicGenreService.GetMusicGenresWithTotalGroupsMusicGenreService();
+
             return Ok(genres);
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<MusicGenreDTO>> Add(MusicGenreInsertDTO musicGenreInsertDTO)
+        public async Task<ActionResult<MusicGenreItemDTO>> Add(MusicGenreInsertDTO musicGenreInsertDTO)
         {
             var validationResult = await _musicGenreInsertValidator.ValidateAsync(musicGenreInsertDTO);
             if (!validationResult.IsValid)
@@ -89,12 +101,14 @@ namespace eCommerceDs.Controllers
 
             var musicGenreDTO = await _musicGenreService.AddService(musicGenreInsertDTO);
 
-            return CreatedAtAction(nameof(GetById), new { musicGenreDTO.IdMusicGenre }, musicGenreDTO);
+            var musicGenreItemDTO = _mapper.Map<MusicGenreItemDTO>(musicGenreDTO);
+
+            return CreatedAtAction(nameof(GetById), new { musicGenreItemDTO.IdMusicGenre }, musicGenreItemDTO);
         }
 
 
         [HttpPut("{IdMusicGenre:int}")]
-        public async Task<ActionResult<MusicGenreDTO>> Update(int IdMusicGenre, MusicGenreUpdateDTO musicGenreUpdateDTO)
+        public async Task<ActionResult<MusicGenreItemDTO>> Update(int IdMusicGenre, MusicGenreUpdateDTO musicGenreUpdateDTO)
         {
             var validationResult = await _musicGenreUpdateValidator.ValidateAsync(musicGenreUpdateDTO);
             if (!validationResult.IsValid)
@@ -104,12 +118,14 @@ namespace eCommerceDs.Controllers
 
             var musicGenreDTO = await _musicGenreService.UpdateService(IdMusicGenre, musicGenreUpdateDTO);
 
-            return musicGenreDTO == null ? NotFound($"MusicGenre with ID {IdMusicGenre} not found") : Ok(musicGenreDTO);
+            var musicGenreItemDTO = _mapper.Map<MusicGenreItemDTO>(musicGenreDTO);
+
+            return musicGenreItemDTO == null ? NotFound($"MusicGenre with ID {IdMusicGenre} not found") : Ok(musicGenreItemDTO);
         }
 
 
         [HttpDelete("{IdMusicGenre:int}")]
-        public async Task<ActionResult<MusicGenreDTO>> Delete(int IdMusicGenre)
+        public async Task<ActionResult<MusicGenreItemDTO>> Delete(int IdMusicGenre)
         {
             bool hasGroups = await _musicGenreService.MusicGenreHasGroupsMusicGenreService(IdMusicGenre);
             if (hasGroups)
@@ -117,7 +133,9 @@ namespace eCommerceDs.Controllers
                 return BadRequest($"The Music Genre with ID {IdMusicGenre} cannot be deleted because it has associated Groups");
             }
             var musicGenreDTO = await _musicGenreService.DeleteService(IdMusicGenre);
-            return musicGenreDTO == null ? NotFound($"MusicalGenre with ID {IdMusicGenre} not found") : Ok(musicGenreDTO);
+            var musicGenreItemDTO = _mapper.Map<MusicGenreItemDTO>(musicGenreDTO);
+
+            return musicGenreItemDTO == null ? NotFound($"MusicalGenre with ID {IdMusicGenre} not found") : Ok(musicGenreItemDTO);
         }
 
     }

@@ -24,6 +24,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<GroupDTO>> GetService()
         {
             var groups = await _groupRepository.GetGroupRepository();
+
             return groups.Select(group => _mapper.Map<GroupDTO>(group));
         }
 
@@ -65,6 +66,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<GroupDTO>> GetSortedByNameGroupService(bool ascending)
         {
             var groups = await _groupRepository.GetSortedByNameGroupRepository(ascending);
+
             return groups.Select(group => _mapper.Map<GroupDTO>(group));
         }
 
@@ -72,6 +74,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<GroupDTO>> SearchByNameGroupService(string text)
         {
             var groups = await _groupRepository.SearchByNameGroupRepository(text);
+
             return groups.Select(group => _mapper.Map<GroupDTO>(group));
         }
 
@@ -158,6 +161,7 @@ namespace eCommerceDs.Services
 
                 return groupDTO;
             }
+
             return null;
         }
 

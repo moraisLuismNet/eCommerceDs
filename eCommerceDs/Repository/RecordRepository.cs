@@ -32,6 +32,7 @@ namespace eCommerceDs.Repository
                                 })
                                 .AsNoTracking()  // Disable entity tracking
                                 .ToListAsync();
+
             return records;
         }
 

@@ -26,6 +26,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<RecordDTO>> GetService()
         {
             var records = await _recordRepository.GetRecordRepository();
+
             return records.Select(record => _mapper.Map<RecordDTO>(record));
         }
 
@@ -52,6 +53,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<RecordDTO>> GetSortedByTitleRecordService(bool ascending)
         {
             var records = await _recordRepository.GetSortedByTitleRecordRepository(ascending);
+
             return records.Select(record => _mapper.Map<RecordDTO>(record));
         }
 
@@ -59,6 +61,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<RecordDTO>> SearchByTitleRecordService(string text)
         {
             var records = await _recordRepository.SearchByTitleRecordRepository(text);
+
             return records.Select(record => _mapper.Map<RecordDTO>(record));
         }
 
@@ -66,6 +69,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<RecordDTO>> GetByPriceRangeRecordService(decimal min, decimal max)
         {
             var records = await _recordRepository.GetByPriceRangeRecordRepository(min, max);
+
             return records.Select(record => _mapper.Map<RecordDTO>(record));
         }
 
@@ -165,6 +169,7 @@ namespace eCommerceDs.Services
 
                 return recordDTO;
             }
+
             return null;
         }
 

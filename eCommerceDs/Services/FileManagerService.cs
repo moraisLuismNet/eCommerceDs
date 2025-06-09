@@ -51,12 +51,14 @@
 
             var currentUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";
             var urlForBD = Path.Combine(currentUrl, folder, fileName).Replace("\\", "/");
+
             return urlForBD;
         }
 
         public async Task<string> EditFile(byte[] content, string extension, string folder, string route, string contentType)
         {
             await DeleteFile(route, folder);
+
             return await SaveFile(content, extension, folder, contentType);
         }
     }

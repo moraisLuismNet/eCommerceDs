@@ -1,6 +1,4 @@
-﻿using eCommerceDs.Models;
-
-namespace eCommerceDs.DTOs
+﻿namespace eCommerceDs.DTOs
 {
     public class OrderDTO
     {

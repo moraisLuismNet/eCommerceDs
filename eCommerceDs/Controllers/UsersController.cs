@@ -19,9 +19,10 @@ namespace eCommerceDs.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<UserDTO>>> GetUsers()
+        public async Task<ActionResult<List<UserInsertDTO>>> GetUsers()
         {
             var users = await _userService.GetUserService();
+
             return Ok(users);
         }
 

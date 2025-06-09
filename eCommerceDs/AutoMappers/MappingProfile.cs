@@ -10,9 +10,12 @@ namespace eCommerceDs.AutoMappers
         {
             CreateMap<Group, GroupDTO>().ReverseMap();
             CreateMap<Group, GroupInsertDTO>().ReverseMap();
+            CreateMap<GroupDTO, GroupItemDTO>().ReverseMap();
             CreateMap<Group, GroupUpdateDTO>().ReverseMap();
             CreateMap<Group, GroupRecordsDTO>().ReverseMap();
             CreateMap<MusicGenre, MusicGenreDTO>().ReverseMap();
+            CreateMap<MusicGenre, MusicGenreItemDTO>().ReverseMap();
+            CreateMap<MusicGenreDTO, MusicGenreItemDTO>().ReverseMap();
             CreateMap<MusicGenre, MusicGenreInsertDTO>().ReverseMap();
             CreateMap<MusicGenre, MusicGenreUpdateDTO>().ReverseMap();
             CreateMap<MusicGenre, MusicGenreTotalGroupsDTO>().ReverseMap();
@@ -20,6 +23,8 @@ namespace eCommerceDs.AutoMappers
             CreateMap<Record, RecordInsertDTO>().ReverseMap();
             CreateMap<Record, RecordUpdateDTO>().ReverseMap();
             CreateMap<Record, RecordItemDTO>().ReverseMap();
+            CreateMap<Record, RecordItemExtDTO>().ReverseMap();
+            CreateMap<RecordDTO, RecordItemExtDTO>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<User, UserInsertDTO>().ReverseMap();
             CreateMap<User, UserLoginDTO>().ReverseMap();

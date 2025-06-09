@@ -42,7 +42,7 @@ namespace eCommerceDs.Repository
         public async Task<IEnumerable<GroupRecordsDTO>> GetGroupsRecordsGroupRepository()
         {
             return await _context.Groups
-                .AsNoTracking()  // Disable entity tracking
+                .AsNoTracking()
                 .Include(a => a.Records)
                 .Select(a => new GroupRecordsDTO
                 {
@@ -52,7 +52,11 @@ namespace eCommerceDs.Repository
                     Records = a.Records.Select(l => new RecordItemDTO
                     {
                         IdRecord = l.IdRecord,
-                        TitleRecord = l.TitleRecord
+                        TitleRecord = l.TitleRecord,
+                        YearOfPublication = l.YearOfPublication == 0 ? null : l.YearOfPublication,
+                        ImageRecord = l.ImageRecord,
+                        Price = l.Price == 0 ? null : l.Price,
+                        Stock = l.Stock == 0 ? null : l.Stock
                     }).ToList()
                 }).ToListAsync();
         }

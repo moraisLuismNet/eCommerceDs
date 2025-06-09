@@ -1,4 +1,5 @@
-﻿using eCommerceDs.DTOs;
+﻿using AutoMapper;
+using eCommerceDs.DTOs;
 using eCommerceDs.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -14,12 +15,15 @@ namespace eCommerceDs.Controllers
         private readonly IValidator<RecordInsertDTO> _recordInsertValidator;
         private readonly IValidator<RecordUpdateDTO> _recordUpdateValidator;
         private readonly IRecordService _recordService;
+        private IMapper _mapper;
         public RecordsController(IValidator<RecordInsertDTO> recordInsertValidator, 
-            IValidator<RecordUpdateDTO> recordUpdateValidator, IRecordService recordService)
+            IValidator<RecordUpdateDTO> recordUpdateValidator, IRecordService recordService,
+            IMapper mapper)
         {
             _recordInsertValidator = recordInsertValidator;
             _recordUpdateValidator = recordUpdateValidator;
             _recordService = recordService;
+            _mapper = mapper;
         }
 
 
@@ -32,25 +36,29 @@ namespace eCommerceDs.Controllers
 
         [HttpGet("{IdRecord:int}")]
         [AllowAnonymous]
-        public async Task<ActionResult<RecordDTO>> GetById(int IdRecord)
+        public async Task<ActionResult<RecordItemExtDTO>> GetById(int IdRecord)
         {
             var recordDTO = await _recordService.GetByIdService(IdRecord);
-            return recordDTO == null ? NotFound($"Record with ID {IdRecord} not found") : Ok(recordDTO);
+            var recordItemExtDTO = _mapper.Map<RecordItemExtDTO>(recordDTO);
+
+            return recordItemExtDTO == null ? NotFound($"Record with ID {IdRecord} not found") : Ok(recordItemExtDTO);
         }
 
 
         [HttpGet("sortedByTitle/{ascen}")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<RecordDTO>>> GetSortedByTitle(bool ascen)
+        public async Task<ActionResult<IEnumerable<RecordItemExtDTO>>> GetSortedByTitle(bool ascen)
         {
             var records = await _recordService.GetSortedByTitleRecordService(ascen);
-            return Ok(records);
+            var recordsItemExt = _mapper.Map<IEnumerable<RecordItemExtDTO>>(records);
+
+            return Ok(recordsItemExt);
         }
 
 
         [HttpGet("SearchByTitle/{text}")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<RecordDTO>>> SearchByTitle(string text)
+        public async Task<ActionResult<IEnumerable<RecordItemExtDTO>>> SearchByTitle(string text)
         {
             var records = await _recordService.SearchByTitleRecordService(text);
 
@@ -59,21 +67,25 @@ namespace eCommerceDs.Controllers
                 return NotFound($"No records found matching the text '{text}'");
             }
 
-            return Ok(records);
+            var recordsItemExt = _mapper.Map<IEnumerable<RecordItemExtDTO>>(records);
+
+            return Ok(recordsItemExt);
         }
 
 
         [HttpGet("byPriceRange")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<RecordDTO>>> GetByPriceRange(decimal min, decimal max)
+        public async Task<ActionResult<IEnumerable<RecordItemDTO>>> GetByPriceRange(decimal min, decimal max)
         {
             var records = await _recordService.GetByPriceRangeRecordService(min, max);
-            return Ok(records);
+            var recordsItemExt = _mapper.Map<IEnumerable<RecordItemExtDTO>>(records);
+
+            return Ok(recordsItemExt);
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<RecordDTO>> Add(RecordInsertDTO recordInsertDTO)
+        public async Task<ActionResult<RecordItemDTO>> Add(RecordInsertDTO recordInsertDTO)
         {
             var validationResult = await _recordInsertValidator.ValidateAsync(recordInsertDTO);
             if (!validationResult.IsValid)
@@ -83,12 +95,14 @@ namespace eCommerceDs.Controllers
 
             var recordDTO = await _recordService.AddService(recordInsertDTO);
 
-            return CreatedAtAction(nameof(GetById), new { recordDTO.IdRecord }, recordDTO);
+            var recordItemExtDTO = _mapper.Map<RecordItemExtDTO>(recordDTO);
+
+            return CreatedAtAction(nameof(GetById), new { recordItemExtDTO.IdRecord }, recordItemExtDTO);
         }
 
 
         [HttpPut("{IdRecord:int}")]
-        public async Task<ActionResult<RecordDTO>> Update(int IdRecord, RecordUpdateDTO recordUpdateDTO)
+        public async Task<ActionResult<RecordItemDTO>> Update(int IdRecord, RecordUpdateDTO recordUpdateDTO)
         {
             var validationResult = await _recordUpdateValidator.ValidateAsync(recordUpdateDTO);
             if (!validationResult.IsValid)
@@ -98,7 +112,9 @@ namespace eCommerceDs.Controllers
 
             var recordDTO = await _recordService.UpdateService(IdRecord, recordUpdateDTO);
 
-            return recordDTO == null ? NotFound($"Record with ID {IdRecord} not found") : Ok(recordDTO);
+            var recordItemExtDTO = _mapper.Map<RecordItemExtDTO>(recordDTO);
+
+            return recordItemExtDTO == null ? NotFound($"Record with ID {IdRecord} not found") : Ok(recordItemExtDTO);
         }
 
 
@@ -131,10 +147,12 @@ namespace eCommerceDs.Controllers
 
 
         [HttpDelete("{IdRecord:int}")]
-        public async Task<ActionResult<RecordDTO>> Delete(int IdRecord)
+        public async Task<ActionResult<RecordItemExtDTO>> Delete(int IdRecord)
         {
             var recordDTO = await _recordService.DeleteService(IdRecord);
-            return recordDTO == null ? NotFound($"Record with ID {IdRecord} not found") : Ok(recordDTO);
+            var recordItemExtDTO = _mapper.Map<RecordItemExtDTO>(recordDTO);
+
+            return recordItemExtDTO == null ? NotFound($"Record with ID {IdRecord} not found") : Ok(recordItemExtDTO);
         }
 
     }

@@ -20,6 +20,7 @@ namespace eCommerceDs.Controllers
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrders()
         {
             var orders = await _orderService.GetOrdersOrderService();
+
             return Ok(orders);
         }
 
@@ -28,6 +29,7 @@ namespace eCommerceDs.Controllers
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrdersByUserEmail(string userEmail)
         {
             var orders = await _orderService.GetOrdersByUserEmailOrderService(userEmail);
+
             return Ok(orders);
         }
 

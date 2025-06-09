@@ -31,6 +31,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<OrderDTO>> GetOrdersOrderService()
         {
             var orders = await _orderRepository.GetOrdersOrderRepository();
+
             return _mapper.Map<IEnumerable<OrderDTO>>(orders); 
         }
 
@@ -38,6 +39,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<OrderDTO>> GetOrdersByUserEmailOrderService(string userEmail)
         {
             var orders = await _orderRepository.GetOrdersByUserEmailOrderRepository(userEmail);
+
             return _mapper.Map<IEnumerable<OrderDTO>>(orders);
         }
 

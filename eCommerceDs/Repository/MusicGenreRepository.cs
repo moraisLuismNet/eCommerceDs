@@ -25,6 +25,7 @@ namespace eCommerceDs.Repository
                                  })
                                  .AsNoTracking()  // Disable entity tracking
                                  .ToListAsync();
+
             return musicGenres ?? new List<MusicGenreDTO>();
         }
 

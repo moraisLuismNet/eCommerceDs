@@ -24,6 +24,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<MusicGenreDTO>> GetService()
         {
             var musicGenres = await _musicGenreRepository.GetMusicGenreRepository();
+
             return musicGenres?.Select(musicGenre => _mapper.Map<MusicGenreDTO>(musicGenre)) ?? new List< MusicGenreDTO > ();
         }
 
@@ -45,6 +46,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<MusicGenreDTO>> SearchByNameMusicGenreService(string text)
         {
             var musicGenres = await _musicGenreRepository.SearchByNameMusicGenreRepository(text);
+
             return musicGenres.Select(musicGenre => _mapper.Map<MusicGenreDTO>(musicGenre));
         }
 
@@ -52,6 +54,7 @@ namespace eCommerceDs.Services
         public async Task<IEnumerable<MusicGenreDTO>> GetSortedByNameMusicGenreService(bool ascending)
         {
             var musicGenres = await _musicGenreRepository.GetSortedByNameMusicGenreRepository(ascending);
+            
             return musicGenres.Select(musicGenre => _mapper.Map<MusicGenreDTO>(musicGenre));
         }
 
@@ -75,6 +78,7 @@ namespace eCommerceDs.Services
             await _musicGenreRepository.AddRepository(musicGenre);
             await _musicGenreRepository.SaveRepository();
             var musicGenreDTO = _mapper.Map<MusicGenreDTO>(musicGenre);
+            
             return musicGenreDTO;
         }
 
@@ -94,6 +98,7 @@ namespace eCommerceDs.Services
 
                 return musicGenreDTO;
             }
+            
             return null;
         }
 
@@ -111,6 +116,7 @@ namespace eCommerceDs.Services
 
                 return musicGenreDTO;
             }
+            
             return null;
         }
 

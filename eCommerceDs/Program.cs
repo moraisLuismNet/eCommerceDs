@@ -104,10 +104,8 @@ builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICartDetailService, CartDetailService>();
 
-
 // Mappers
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
 
 // Repositories
 builder.Services.AddScoped<IGroupRepository<Group>, GroupRepository>();
@@ -118,7 +116,6 @@ builder.Services.AddScoped<ICartDetailRepository, CartDetailRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICartDetailRepository, CartDetailRepository>();
-
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
